@@ -6,6 +6,21 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Issue {
+  id          Int      @id @default(autoincrement()) // setting as default and autoincrementing the ids
+  title       String   @db.VarChar(255) // can store varchar(191) by default so are overriding
+  description String   @db.Text // using text instead of varchar when we want to have very long strings
+  status      Status   @default(OPEN)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Status {
+  OPEN
+  IN_PROGRESS
+  CLOSED
 }
